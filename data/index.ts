@@ -5,3 +5,5 @@ export const InitialState = {
 };
 
 export const START_GAME = "start-game";
+export const TIMER = "timer";
+export const RESULT = "result";
