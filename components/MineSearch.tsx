@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useMemo } from "react";
 import styled from "styled-components";
 import { createStore, combineReducers } from "redux";
 import Form from "./Form";
@@ -7,11 +7,10 @@ import { START_GAME, TIMER, RESULT } from "../data";
 
 const Container = styled.div``;
 
-// interface IProps {
-//   tableData: string[];
-//   timer: number;
-//   result: string;
-// }
+export const TableContext = createContext({
+  tableData: [],
+  store: () => {},
+});
 
 const MineSearch: React.FC = () => {
   const tableDataReducer = (tableData = [], action) => {
@@ -51,12 +50,21 @@ const MineSearch: React.FC = () => {
   });
   const store = createStore(rootReducer);
   store.dispatch({ type: START_GAME });
+  const value = useMemo(
+    () => ({
+      tableData: store.getState().tableDataReducer,
+      store,
+    }),
+    [store.getState().tableDataReducer]
+  );
   return (
     <Container>
-      <Form />
-      <div>{store.getState().timerReducer}</div>
-      <Table />
-      <div>{store.getState().resultReducer}</div>
+      <TableContext.Provider value={value}>
+        <Form />
+        <div>{store.getState().timerReducer}</div>
+        <Table />
+        <div>{store.getState().resultReducer}</div>
+      </TableContext.Provider>
     </Container>
   );
 };
