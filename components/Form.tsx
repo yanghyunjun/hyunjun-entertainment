@@ -2,7 +2,6 @@ import React, { useState, useCallback, useContext } from "react";
 import styled from "styled-components";
 import { TableContext } from "./MineSearch";
 import { START_GAME } from "../data";
-
 const Container = styled.div``;
 
 const Form: React.FC = () => {
@@ -21,7 +20,9 @@ const Form: React.FC = () => {
     setMine(e.target.value);
   }, []);
 
-  const onChangeBtn = useCallback(() => {});
+  const onChangeBtn = () => {
+    store.dispatch({ type: START_GAME, row, col, mine });
+  };
   return (
     <Container>
       <input
@@ -42,6 +43,7 @@ const Form: React.FC = () => {
         value={mine}
         onChange={onChangeMine}
       />
+      <button onClick={onChangeBtn}>시작</button>
     </Container>
   );
 };
